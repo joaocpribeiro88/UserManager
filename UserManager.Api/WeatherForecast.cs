@@ -1,5 +1,6 @@
 namespace UserManager.Api
 {
+    [Obsolete]
     public class WeatherForecast
     {
         public DateOnly Date { get; set; }

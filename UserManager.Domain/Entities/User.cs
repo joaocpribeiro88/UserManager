@@ -1,11 +1,6 @@
 ﻿namespace UserManager.Domain.Entities;
 public class User
 {
-    public User()
-    {
-        Employments = new List<Employment>();
-    }
-
     public int Id { get; set; }
     public string FirstName { get; set; } = string.Empty; //MANDATORY 
     public string LastName { get; set; } = string.Empty; //MANDATORY 
@@ -13,5 +8,5 @@ public class User
     public Address? Address { get; set; }
     // add, update an existing employment,
     // delete an existing employment
-    public List<Employment> Employments { get; set; } 
+    public List<Employment> Employments { get; set; } = [];
 }
