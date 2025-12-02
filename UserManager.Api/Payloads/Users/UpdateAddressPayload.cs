@@ -1,6 +1,6 @@
-﻿namespace UserManager.Domain.ViewModels;
+﻿namespace UserManager.Api.Payloads.Users;
 
-public class AddressViewModel
+public class UpdateAddressPayload
 {
     public string Street { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;

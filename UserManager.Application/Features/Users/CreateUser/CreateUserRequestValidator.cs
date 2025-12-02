@@ -48,7 +48,9 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
                 .NotEmpty().WithMessage("Start date is required");
 
             employment.RuleFor(e => e.EndDate)
-                .GreaterThan(e => e.StartDate).When(e => e.EndDate != null);
+                .GreaterThan(e => e.StartDate)
+                .When(e => e.EndDate != null)
+                .WithMessage("End date must be greater than start date.");
         });
     }
 }

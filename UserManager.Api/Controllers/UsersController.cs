@@ -1,8 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UserManager.Api.Extensions;
+using UserManager.Api.Extensions.User;
+using UserManager.Api.Payloads.Users;
 using UserManager.Application.Features.Users.CreateUser;
 using UserManager.Application.Features.Users.GetUser;
+using UserManager.Application.Features.Users.UpdateUser;
 using UserManager.Domain.ViewModels;
 
 namespace UserManager.Api.Controllers
@@ -20,9 +23,10 @@ namespace UserManager.Api.Controllers
 
         [HttpPost]
         public async Task<ActionResult<CreateUserResponseViewModel>> CreateUser(
-            [FromBody] CreateUserRequest request)
+            [FromBody] CreateUserPayload payload)
         {
-            var result = await _mediator.Send(request);
+            var createUserRequest = payload.ToRequestModel();
+            var result = await _mediator.Send(createUserRequest);
 
             return result.ToActionResult();
         }
@@ -32,6 +36,17 @@ namespace UserManager.Api.Controllers
         {
             var request = new GetUserRequest { Id = id };
             var result = await _mediator.Send(request);
+
+            return result.ToActionResult();
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<GetUserResponseViewModel>> UpdateUser(
+            [FromRoute] int id,
+            [FromBody] UpdateUserPayload payload)
+        {
+            var updateUserRequest = payload.ToRequestModel(id);
+            var result = await _mediator.Send(updateUserRequest);
 
             return result.ToActionResult();
         }

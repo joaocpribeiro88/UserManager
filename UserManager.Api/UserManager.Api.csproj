@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Payloads\NewFolder\**" />
+    <Content Remove="Payloads\NewFolder\**" />
+    <EmbeddedResource Remove="Payloads\NewFolder\**" />
+    <None Remove="Payloads\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>

@@ -14,7 +14,6 @@ public static class UserExtensions
             Email = user.Email,
             Address = user.Address != null ? new AddressViewModel
             {
-                Id = user.Address.Id,
                 Street = user.Address.Street,
                 City = user.Address.City,
                 PostCode = user.Address.PostCode
