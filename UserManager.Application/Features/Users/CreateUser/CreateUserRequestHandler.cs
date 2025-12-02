@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using UserManager.Application.Models;
 using UserManager.Domain.Entities;
 using UserManager.Domain.ViewModels;
@@ -11,10 +12,14 @@ namespace UserManager.Application.Features.Users.CreateUser;
 
 public class CreateUserRequestHandler : IRequestHandler<CreateUserRequest, Result<CreateUserResponseViewModel>>
 {
+    private readonly ILogger<CreateUserRequestHandler> _logger;
     private readonly UserManagerDbContext _context;
 
-    public CreateUserRequestHandler(UserManagerDbContext context)
+    public CreateUserRequestHandler(
+        ILogger<CreateUserRequestHandler> logger,
+        UserManagerDbContext context)
     {
+        _logger = logger;
         _context = context;
     }
 
@@ -66,6 +71,8 @@ public class CreateUserRequestHandler : IRequestHandler<CreateUserRequest, Resul
             _context.Users.Add(user);
             await _context.SaveChangesAsync(cancellationToken);
 
+            _logger.LogInformation("User {userId} added.", user.Id);
+
             return Result.Ok(new CreateUserResponseViewModel
             {
                 Id = user.Id
@@ -73,6 +80,7 @@ public class CreateUserRequestHandler : IRequestHandler<CreateUserRequest, Resul
         }
         catch (DbUpdateException dbEx)
         {
+            _logger.LogError(dbEx, "Database error creating user.");
             return Result.Fail(new CustomErrorResultDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
@@ -81,6 +89,7 @@ public class CreateUserRequestHandler : IRequestHandler<CreateUserRequest, Resul
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error creating user.");
             return Result.Fail(new CustomErrorResultDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
